@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 6379
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: redis
+  subsets: 
+    addresses:
+      - ip: 163.172.175.218
+      - ip: 163.172.128.199
+      - ip: 51.15.140.225
+    ports:
+      - port: 6379

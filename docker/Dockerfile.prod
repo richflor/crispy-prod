@@ -1,0 +1,28 @@
+
+FROM ruby:3.1.3
+
+# Create directory for our Rails application and set it as working directory
+RUN mkdir /app
+WORKDIR /app
+
+# Copy the Gemfile
+COPY Gemfile Gemfile.lock ./
+
+# Install nodejs and yarl (if you need anything else you can add it here)
+RUN apt-get update && apt-get install -y nodejs yarn
+
+# Install bundler and run bundle install
+RUN gem install bundler
+RUN bundle install
+
+# Copy the Rails application code
+COPY . .
+
+# Precompile the Rails assets.
+# RUN rake assets:precompile
+
+# Expose your Rails app
+EXPOSE 3000
+
+# Run Rails server
+CMD ["rails", "server", "-b", "0.0.0.0"]

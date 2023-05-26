@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data: 
+  RAILS_ENV: production
+
+  MARIADB_DATABASE: 'crispydb'
+  MARIADB_HOST: 51.159.205.58
+  MARIADB_PORT: "15347"
+  DATABASE_URL: "mysql2://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
+  
+  EMAIL_PORT: "25"
+  EMAIL_FROM: dreamforallai@gmail.com
+
+  REDIS_HOST: 163.172.175.218
+  REDIS_PORT: "6379"
+  REDIS_URL: "redis://${REDIS_USERNAME}:${REDIS_PASSWORD}@${REDIS_HOST}:${REDIS_PORT}"

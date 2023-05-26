@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+  labels:
+    app: db-migrate
+spec:
+  template:
+    metadata:
+      labels:
+        app: bdb-migrate
+    spec:
+      containers:
+      - command:
+        - rails
+        - db:migrate
+        envFrom:
+        - configMapRef:
+            name: bands-api
+        image: richflor/crispy-hetic
+        imagePullPolicy: IfNotPresent
+        name: main
+      restartPolicy: Never
