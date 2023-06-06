@@ -1,22 +1,95 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: db-migrate
+  name: db-remigrate
   labels:
-    app: db-migrate
+    app: db-remigrate
 spec:
   template:
     metadata:
       labels:
-        app: bdb-migrate
+        app: db-remigrate
     spec:
       containers:
       - command:
         - rails
         - db:migrate
-        envFrom:
-        - configMapRef:
-            name: bands-api
+        env:
+          - name: MARIADB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: MARIADB_DATABASE
+          - name: MARIADB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: MARIADB_HOST
+          - name: MARIADB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: MARIADB_PORT
+          - name: MARIADB_USER
+            valueFrom:
+              secretKeyRef:
+                name: crispy-secret
+                key: MARIADB_USER
+          - name: MARIADB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: crispy-secret
+                key: MARIADB_PASSWORD
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: DATABASE_URL
+          - name: EMAIL_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: EMAIL_PORT
+          - name: EMAIL_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: crispy-secret
+                key: MARIADB_PASSWORD
+          - name: EMAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: crispy-secret
+                key: MARIADB_PASSWORD
+          - name: EMAIL_FROM
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: EMAIL_FROM
+          - name: REDIS_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: REDIS_HOST
+          - name: REDIS_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: REDIS_PORT
+          - name: REDIS_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: crispy-secret
+                key: REDIS_USERNAME
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: crispy-secret
+                key: REDIS_PASSWORD
+          - name: REDIS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: config
+                key: REDIS_URL
         image: richflor/crispy-hetic
         imagePullPolicy: IfNotPresent
         name: main

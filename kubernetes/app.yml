@@ -74,7 +74,10 @@ spec:
                   name: crispy-secret
                   key: MARIADB_PASSWORD
             - name: EMAIL_FROM
-              value: "bienechris@hetic.fr"
+              valueFrom:
+                configMapKeyRef:
+                  name: config
+                  key: EMAIL_FROM
             
             - name: REDIS_HOST
               valueFrom:
@@ -109,7 +112,9 @@ metadata:
 spec:
   selector:
     app: app
+  type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 3000
+      port: 80
       targetPort: 3000
+      nodePort: 32607
